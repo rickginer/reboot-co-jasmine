@@ -26,7 +26,6 @@ todo = new ToDo();
 function Dom() {
 
     this.createForm = () => {
-        let body = document.getElementsByTagName('body')[0];
         let form = document.createElement('form');
         form.name = 'todoForm';
         form.innerHTML = `
@@ -38,7 +37,7 @@ function Dom() {
                 Add item
             </button>
         `;
-        body.appendChild(form);
+        document.body.appendChild(form);
     }
 
 }

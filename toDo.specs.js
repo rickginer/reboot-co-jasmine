@@ -34,3 +34,28 @@ describe('Testing the functionality', ()=>{
         expect(todo.getItems().find(item => item.id == 2).complete).toBe(true);
     })
 })
+
+
+describe('Testing the DOM', ()=>{
+
+    beforeEach(function(){
+        todo = new ToDo();
+        dom = new Dom();
+    })
+
+    it('should call addTodo when button clicked', ()=> {
+        spyOn(todo, 'addTodo');
+        let button = document.getElementById('addButton');
+        document.getElementById('ItemName').value='new item';
+        button.click();
+        expect(todo.addTodo).toHaveBeenCalled();
+    })
+
+    it('should add todo elements to the page', ()=> {
+        // let button = document.getElementById('addButton');
+        // button.click();
+        // let todoElements = document.getElementsByTagName('li');
+        // expect(todoElements).length().toBe(1);
+    });
+
+})
