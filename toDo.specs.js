@@ -43,12 +43,12 @@ describe('Testing the DOM', ()=>{
         dom = new Dom();
     })
 
-    it('should call addTodo when button clicked', ()=> {
+    it('should call addTodo with text input value when the add button clicked', ()=> {
         spyOn(todo, 'addTodo');
-        let button = document.getElementById('addButton');
+        let button = document.getElementsByTagName('button')[0];
         document.getElementById('ItemName').value='new item';
         button.click();
-        expect(todo.addTodo).toHaveBeenCalled();
+        expect(todo.addTodo).toHaveBeenCalledWith('new item');
     })
 
     it('should add todo elements to the page', ()=> {

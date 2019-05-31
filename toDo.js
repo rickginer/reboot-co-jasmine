@@ -32,7 +32,6 @@ function Dom() {
             <input id="ItemName" />
             <button
                 type="button" 
-                id="addButton"
                 onclick="todo.addTodo(todoForm.ItemName.value); console.log(todo.getItems());">
                 Add item
             </button>
