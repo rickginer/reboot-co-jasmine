@@ -21,3 +21,27 @@ function ToDo(){
 }
 
 todo = new ToDo();
+
+
+function Dom() {
+
+    this.createForm = () => {
+        let body = document.getElementsByTagName('body')[0];
+        let form = document.createElement('form');
+        form.name = 'todoForm';
+        form.innerHTML = `
+            <input id="ItemName" />
+            <button
+                type="button" 
+                id="addButton"
+                onclick="todo.addTodo(todoForm.ItemName.value); console.log(todo.getItems());">
+                Add item
+            </button>
+        `;
+        body.appendChild(form);
+    }
+
+}
+
+dom = new Dom();
+dom.createForm();
