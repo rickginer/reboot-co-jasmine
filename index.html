@@ -4,6 +4,11 @@
   <title>Todo</title>
 </head>
 <body>
+    <form name="todoForm">
+        <input id="ItemName" />
+        <button id="AddButton" type="button" onclick="todo.addTodo(todoForm.ItemName.value); console.log(todo.getItems());">Add item</button>
+        <div id="TodoList"><ul></ul></div>
+    </form>
 </body>
 <script src="toDo.js"></script>
 </html>

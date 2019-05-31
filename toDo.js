@@ -17,4 +17,7 @@ function ToDo(){
     this.complete = (id) => {
         todo.find(item => item.id == id).complete = true;
     }
+
 }
+
+todo = new ToDo();
