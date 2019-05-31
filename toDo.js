@@ -13,4 +13,8 @@ function ToDo(){
     this.delete = (id) => {
         todo =  todo.filter(item => item.id !== id)
     }
+
+    this.complete = (id) => {
+        todo.find(item => item.id == id).complete = true;
+    }
 }
