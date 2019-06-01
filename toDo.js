@@ -3,7 +3,15 @@ function ToDo(){
     let todo = [];
     
     this.addTodo = (item) => {
-        todo.push( item)
+        const promise = $.ajax({
+            url: 'https://httpstat.us/200',
+            type: 'POST'            
+        }).done(function () {
+            todo.push( item)
+        }).fail(function() {
+            console.log('failed async call');
+        });
+        return promise;
     }
     
     this.getItems = () => {
@@ -46,8 +54,11 @@ function Dom() {
             'complete': false,
             'title': val
         }
-        todo.addTodo(item);
-        this.showItems();
+        todo.addTodo(item).then(() => {
+            this.showItems()
+        }).catch((response) => {
+            console.log('Error', response);
+        });
     }
 
     this.showItems = () => {

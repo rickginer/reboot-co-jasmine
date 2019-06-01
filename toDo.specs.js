@@ -1,3 +1,12 @@
+let ajaxSpy;
+beforeEach(function(){ 
+    ajaxSpy = spyOn($, 'ajax').and.callFake(function (req) {
+        var d = $.Deferred();
+        d.resolve();
+        return d.promise();
+    })
+})
+
 describe('Testing the functionality', ()=>{
 
     let todo, item, item2;
@@ -12,12 +21,22 @@ describe('Testing the functionality', ()=>{
             id: 2,
             title: "get beer",
             complete: false
-        }   
+        }  
     })
 
-    it('should add an item', ()=>{
+    it('should add an item if ajax request succeeds', ()=>{
         todo.addTodo(item)
         expect(todo.getItems().length).toBe(1);
+    })
+
+    it('should not add an item if ajax request fails', ()=>{
+        ajaxSpy.and.callFake(function (req) {
+            var d = $.Deferred();
+            d.reject();
+            return d.promise();
+        })
+        todo.addTodo(item)
+        expect(todo.getItems().length).toBe(0);     
     })
 
     it('should delete an item', ()=>{
@@ -52,20 +71,44 @@ describe('Testing the DOM', ()=>{
         }, 100)
     })    
 
-    it('should call addTodo with text input value when the add button clicked', ()=> {
-        spyOn(todo, 'addTodo').and.callThrough();
+    it('should call createItem with text input value when the add button clicked', ()=> {
+        spyOn(dom, 'createItem');
         document.getElementById('ItemName').value='new item';
         button.click();
-        expect(todo.addTodo).toHaveBeenCalled();
-        expect(todo.getItems()[0].title).toEqual('new item');
+        expect(dom.createItem).toHaveBeenCalled();
     })
 
-    it('should add todo elements to the page', ()=> {
+    it('createItem should call addTodo', ()=> {
+        spyOn(todo, 'addTodo').and.callThrough()
+        dom.createItem('new item');
+        expect(todo.addTodo).toHaveBeenCalled();
+    });
+
+    it('if item added showItems should be called', (done)=> {
+        spyOn(todo, 'addTodo').and.callFake(function (req) {
+            var d = $.Deferred();
+            d.resolve();
+            return d.promise();
+        })
+        spyOn(dom, 'showItems');
+        dom.createItem('new item');
+        expect(todo.addTodo).toHaveBeenCalled();
+
+        setTimeout(function() {
+            expect(dom.showItems).toHaveBeenCalled();
+            done();
+        }, 0);
+    });
+
+    it('should add todo elements to the page', (done)=> {
         document.getElementById('ItemName').value='new item';
         let list = document.getElementById('todoList');
         button.click();
-        let todoElements = list.getElementsByTagName('li');
-        expect(todoElements.length).toBe(1);
+        //setTimeout(function() {
+            let todoElements = list.getElementsByTagName('li');
+            expect(todoElements.length).toBe(1);
+        //     done();
+        // }, 0);
     });
 
 })
