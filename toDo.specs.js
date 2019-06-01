@@ -43,8 +43,13 @@ describe('Testing the DOM', ()=>{
         dom = new Dom();
     })
 
+    afterEach(function(){
+        let form = document.getElementsByTagName('form')[0];
+        if(form){ document.body.removeChild(form); }
+    })
+
     it('should call addTodo with text input value when the add button clicked', ()=> {
-        spyOn(todo, 'addTodo');
+        spyOn(todo, 'addTodo').and.callThrough();
         let button = document.getElementsByTagName('button')[0];
         document.getElementById('ItemName').value='new item';
         button.click();
