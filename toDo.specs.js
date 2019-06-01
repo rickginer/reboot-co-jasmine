@@ -15,9 +15,24 @@ describe('Testing the functionality', ()=>{
         }   
     })
 
-    it('should add an item', ()=>{
+    fit('should add an item if ajax request succeeds', ()=>{
+        spyOn($, 'ajax').and.callFake(function (req) {
+            var d = $.Deferred();
+            d.resolve();
+            return d.promise();
+        })
         todo.addTodo(item)
         expect(todo.getItems().length).toBe(1);
+    })
+
+    fit('should not add an item if ajax request fails', ()=>{
+        spyOn($, 'ajax').and.callFake(function (req) {
+            var d = $.Deferred();
+            d.reject();
+            return d.promise();
+        })
+        todo.addTodo(item)
+        expect(todo.getItems().length).toBe(0);     
     })
 
     it('should delete an item', ()=>{
@@ -57,7 +72,6 @@ describe('Testing the DOM', ()=>{
         document.getElementById('ItemName').value='new item';
         button.click();
         expect(todo.addTodo).toHaveBeenCalled();
-        expect(todo.getItems()[0].title).toEqual('new item');
     })
 
     it('should add todo elements to the page', ()=> {
