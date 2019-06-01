@@ -1,6 +1,15 @@
+let ajaxSpy;
+beforeEach(function(){ 
+    ajaxSpy = spyOn($, 'ajax').and.callFake(function (req) {
+        var d = $.Deferred();
+        d.resolve();
+        return d.promise();
+    })
+})
+
 describe('Testing the functionality', ()=>{
 
-    let todo, item, item2, ajaxSpy;
+    let todo, item, item2;
     beforeEach(function(){
         todo = new ToDo();
         item = {
@@ -12,12 +21,7 @@ describe('Testing the functionality', ()=>{
             id: 2,
             title: "get beer",
             complete: false
-        }   
-        ajaxSpy = spyOn($, 'ajax').and.callFake(function (req) {
-            var d = $.Deferred();
-            d.resolve();
-            return d.promise();
-        })
+        }  
     })
 
     it('should add an item if ajax request succeeds', ()=>{
