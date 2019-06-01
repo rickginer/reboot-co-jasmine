@@ -32,11 +32,33 @@ function Dom() {
             <input id="ItemName" />
             <button
                 type="button" 
-                onclick="todo.addTodo(todoForm.ItemName.value); console.log(todo.getItems());">
+                onclick="dom.createItem(todoForm.ItemName.value); ">
                 Add item
             </button>
+            <ul id="todoList"></ul>
         `;
         document.body.appendChild(form);
+    }
+
+    this.createItem = (val) => {
+        let item = {
+            'id' : Date.now(),
+            'complete': false,
+            'title': val
+        }
+        todo.addTodo(item);
+        this.showItems();
+    }
+
+    this.showItems = () => {
+        let todoList = document.getElementById('todoList');
+        let items = todo.getItems()
+        todoList.innerHTML = '';
+        items.forEach((item) => {
+            let li = document.createElement('li');
+            li.innerHTML = item.title;
+            todoList.appendChild(li);
+        })
     }
 
 }
