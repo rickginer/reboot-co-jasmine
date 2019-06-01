@@ -38,29 +38,34 @@ describe('Testing the functionality', ()=>{
 
 describe('Testing the DOM', ()=>{
 
+    let button;
     beforeEach(function(){
         todo = new ToDo();
         dom = new Dom();
+        button = document.getElementsByTagName('button')[0];
     })
 
-    afterEach(function(){
-        let form = document.getElementsByTagName('form')[0];
-        if(form){ document.body.removeChild(form); }
-    })
+    afterEach(() => {
+        setTimeout( () => {
+            let form = document.getElementsByTagName('form')[0];
+            if(form){ document.body.removeChild(form); }
+        }, 100)
+    })    
 
     it('should call addTodo with text input value when the add button clicked', ()=> {
         spyOn(todo, 'addTodo').and.callThrough();
-        let button = document.getElementsByTagName('button')[0];
         document.getElementById('ItemName').value='new item';
         button.click();
-        expect(todo.addTodo).toHaveBeenCalledWith('new item');
+        expect(todo.addTodo).toHaveBeenCalled();
+        expect(todo.getItems()[0].title).toEqual('new item');
     })
 
     it('should add todo elements to the page', ()=> {
-        // let button = document.getElementById('addButton');
-        // button.click();
-        // let todoElements = document.getElementsByTagName('li');
-        // expect(todoElements).length().toBe(1);
+        document.getElementById('ItemName').value='new item';
+        let list = document.getElementById('todoList');
+        button.click();
+        let todoElements = list.getElementsByTagName('li');
+        expect(todoElements.length).toBe(1);
     });
 
 })
