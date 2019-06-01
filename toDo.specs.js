@@ -71,19 +71,44 @@ describe('Testing the DOM', ()=>{
         }, 100)
     })    
 
-    it('should call addTodo with text input value when the add button clicked', ()=> {
-        spyOn(todo, 'addTodo').and.callThrough();
+    it('should call createItem with text input value when the add button clicked', ()=> {
+        spyOn(dom, 'createItem');
         document.getElementById('ItemName').value='new item';
         button.click();
-        expect(todo.addTodo).toHaveBeenCalled();
+        expect(dom.createItem).toHaveBeenCalled();
     })
 
-    it('should add todo elements to the page', ()=> {
+    it('createItem should call addTodo', ()=> {
+        spyOn(todo, 'addTodo').and.callThrough()
+        dom.createItem('new item');
+        expect(todo.addTodo).toHaveBeenCalled();
+    });
+
+    it('if item added showItems should be called', (done)=> {
+        spyOn(todo, 'addTodo').and.callFake(function (req) {
+            var d = $.Deferred();
+            d.resolve();
+            return d.promise();
+        })
+        spyOn(dom, 'showItems');
+        dom.createItem('new item');
+        expect(todo.addTodo).toHaveBeenCalled();
+
+        setTimeout(function() {
+            expect(dom.showItems).toHaveBeenCalled();
+            done();
+        }, 0);
+    });
+
+    it('should add todo elements to the page', (done)=> {
         document.getElementById('ItemName').value='new item';
         let list = document.getElementById('todoList');
         button.click();
-        let todoElements = list.getElementsByTagName('li');
-        expect(todoElements.length).toBe(1);
+        //setTimeout(function() {
+            let todoElements = list.getElementsByTagName('li');
+            expect(todoElements.length).toBe(1);
+        //     done();
+        // }, 0);
     });
 
 })
