@@ -1,6 +1,6 @@
 describe('Testing the functionality', ()=>{
 
-    let todo, item, item2;
+    let todo, item, item2, ajaxSpy;
     beforeEach(function(){
         todo = new ToDo();
         item = {
@@ -13,20 +13,20 @@ describe('Testing the functionality', ()=>{
             title: "get beer",
             complete: false
         }   
-    })
-
-    fit('should add an item if ajax request succeeds', ()=>{
-        spyOn($, 'ajax').and.callFake(function (req) {
+        ajaxSpy = spyOn($, 'ajax').and.callFake(function (req) {
             var d = $.Deferred();
             d.resolve();
             return d.promise();
         })
+    })
+
+    it('should add an item if ajax request succeeds', ()=>{
         todo.addTodo(item)
         expect(todo.getItems().length).toBe(1);
     })
 
-    fit('should not add an item if ajax request fails', ()=>{
-        spyOn($, 'ajax').and.callFake(function (req) {
+    it('should not add an item if ajax request fails', ()=>{
+        ajaxSpy.and.callFake(function (req) {
             var d = $.Deferred();
             d.reject();
             return d.promise();
