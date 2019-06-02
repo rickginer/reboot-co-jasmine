@@ -104,11 +104,11 @@ describe('Testing the DOM', ()=>{
         document.getElementById('ItemName').value='new item';
         let list = document.getElementById('todoList');
         button.click();
-        //setTimeout(function() {
+        setTimeout(function() {
             let todoElements = list.getElementsByTagName('li');
             expect(todoElements.length).toBe(1);
-        //     done();
-        // }, 0);
+            done();
+        }, 0);
     });
 
 })
