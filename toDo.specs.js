@@ -24,19 +24,23 @@ describe('Testing the functionality', ()=>{
         }  
     })
 
-    it('should add an item if ajax request succeeds', ()=>{
-        todo.addTodo(item)
-        expect(todo.getItems().length).toBe(1);
+    it('should add an item if ajax request succeeds', (done)=>{
+        todo.addTodo(item).then(() => {
+            expect(todo.getItems().length).toBe(1);
+            done();
+        })
     })
 
-    it('should not add an item if ajax request fails', ()=>{
+    it('should not add an item if ajax request fails', (done)=>{
         ajaxSpy.and.callFake(function (req) {
             var d = $.Deferred();
             d.reject();
             return d.promise();
         })
-        todo.addTodo(item)
-        expect(todo.getItems().length).toBe(0);     
+        todo.addTodo(item).catch(() => {
+            expect(todo.getItems().length).toBe(0);     
+            done();
+        });
     })
 
     it('should delete an item', ()=>{
