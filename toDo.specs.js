@@ -24,6 +24,11 @@ describe('Testing the functionality', ()=>{
         }  
     })
 
+    it('addTodo should make an Ajax request', () => {
+        todo.addTodo(item);
+        expect($.ajax).toHaveBeenCalled();
+    })
+
     it('should add an item if ajax request succeeds', async ()=>{
         await todo.addTodo(item);
         expect(todo.getItems().length).toBe(1);
@@ -99,6 +104,22 @@ describe('Testing the DOM', ()=>{
 
         setTimeout(function() {
             expect(dom.showItems).toHaveBeenCalled();
+            done();
+        }, 0);
+    });
+
+    it('if item NOT added showItems should NOT be called', (done)=> {
+        spyOn(todo, 'addTodo').and.callFake(function (req) {
+            var d = $.Deferred();
+            d.reject();
+            return d.promise();
+        })
+        spyOn(dom, 'showItems');
+        dom.createItem('new item');
+        expect(todo.addTodo).toHaveBeenCalled();
+
+        setTimeout(function() {
+            expect(dom.showItems).not.toHaveBeenCalled();
             done();
         }, 0);
     });
